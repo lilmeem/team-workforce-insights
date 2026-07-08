@@ -1,0 +1,26 @@
+# Raw data — see README's Data Access section for how to download
+postings.csv
+companies/
+jobs/
+mappings/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editor
+.vscode/*
+!.vscode/settings.json
+
+# OS
+.DS_Store
+Thumbs.db
