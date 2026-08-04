@@ -5,3 +5,4 @@ seaborn==0.13.2
 ipykernel==7.0.1
 flashtext==2.7
 pyarrow==23.0.1
+streamlit==1.60.0

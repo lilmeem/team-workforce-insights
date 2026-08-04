@@ -6,10 +6,16 @@ SIADS 699 capstone project. Job postings use inconsistent terminology to describ
 
 ## Status
 
-Early-stage exploratory data analysis. No cleaning, feature engineering, or modeling has happened yet.
+Core pipeline (EDA → cleaning → skill extraction → recommendation engine → dashboard) is built end to end as a v1. Evaluation is basic (see `06_recommendation_engine.ipynb`), and the gazetteer/skill taxonomy is still limited — see each notebook's "known limitations" section.
 
-- [`02_eda_postings.ipynb`](02_eda_postings.ipynb) — EDA on the core `postings.csv` table: shape, dtypes, duplicates, missingness, categorical/numerical distributions.
-- [`03_eda_companies_and_jobs.ipynb`](03_eda_companies_and_jobs.ipynb) — EDA on the supporting company/job/mapping tables, plus how well each one joins back to `postings.csv`.
+Run the notebooks in order, since each one depends on files saved by the previous step:
+
+1. [`02_eda_postings.ipynb`](02_eda_postings.ipynb) — EDA on the core `postings.csv` table.
+2. [`03_eda_companies_and_jobs.ipynb`](03_eda_companies_and_jobs.ipynb) — EDA on the supporting company/job/mapping tables.
+3. [`04_cleaning.ipynb`](04_cleaning.ipynb) — resolves the open questions below, saves `postings_clean.parquet` / `companies_clean.parquet`.
+4. [`05_skill_extraction.ipynb`](05_skill_extraction.ipynb) — gazetteer-based skill extraction from posting descriptions, saves `job_skills_extracted.parquet`.
+5. [`06_recommendation_engine.ipynb`](06_recommendation_engine.ipynb) — IDF-weighted content-based recommender + skill-gap detection, saves `recommendation_artifacts.npz`.
+6. [`app.py`](app.py) — Streamlit dashboard on top of the artifacts from step 5 (see below to run it).
 
 ## Setup
 
@@ -21,7 +27,17 @@ source .venv/bin/activate   # macOS/Linux
 pip install -r requirements.txt
 ```
 
-Then open either notebook in Jupyter or VS Code and run the cells top to bottom.
+Then open the notebooks in Jupyter or VS Code and run them in order (1-5 above) — each one regenerates data files the next step needs (gitignored, not committed; see Data access below).
+
+### Running the dashboard
+
+After running notebooks 1-5 at least once (so `postings_clean.parquet` and `recommendation_artifacts.npz` exist):
+
+```bash
+streamlit run app.py
+```
+
+Opens at `http://localhost:8501`. Pick skills from the multiselect to see ranked job recommendations and a skill-gap list.
 
 ## Data access
 
