@@ -7,6 +7,7 @@ mappings/
 # Derived data (regenerate by running the notebooks) — postings_clean.parquet
 # alone is ~240MB, over GitHub's 100MB file limit anyway
 *.parquet
+*.npz
 
 # Virtual environments
 .venv/
