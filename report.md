@@ -83,3 +83,21 @@ Cory Vinlove contributed to initial data source evaluation during the proposal p
 - Fairness of recommender systems in the recruitment domain: an analysis from technical and legal perspectives. *PMC*. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10587596/
 
 - Ethics and discrimination in artificial intelligence-enabled recruitment practices. (2023). *Humanities and Social Sciences Communications*. Nature. https://www.nature.com/articles/s41599-023-02079-x
+
+## Appendix: Use of AI in This Project
+
+This project made substantial use of Claude (Anthropic) as a coding assistant, so we are documenting that use directly rather than leaving it implicit in the Code Attribution note in our README.
+
+**How AI fit into the workflow.** Development was an iterative loop, not a single generation step (Figure 5). For each stage of the pipeline, the team set the scope and constraints, Claude drafted and executed the corresponding code, and the team reviewed the actual output — executed notebook results, error logs, rendered figures — before the next stage began. Several points in this project involved the team (via prompts) explicitly withholding approval until evidence was shown: for example, cleaning decisions were only made after missingness and outlier evidence was presented, not before.
+
+**Model and parameters.** We used Claude Sonnet 5 (model ID `claude-sonnet-5`) via Claude Code, Anthropic's CLI-based coding agent. The primary tunable parameter we set was reasoning effort, configured at a moderate level (40 on Anthropic's internal 0-100 scale) rather than the maximum available, reflecting a deliberate tradeoff toward faster iteration over exhaustive reasoning on most tasks in this project. Temperature and other decoding parameters were left at the harness's defaults.
+
+**How prompts were composed.** Prompts generally stated the current project state, an explicit task, and explicit constraints on what should or should not happen automatically, rather than open-ended requests. An actual example, verbatim, from early in the project:
+
+> "I am starting a data science capstone project using this LinkedIn job postings dataset. My main table is postings.csv, with related tables in the companies, jobs, and mappings folders. Help me create an initial EDA notebook. Start only with postings.csv. I want to inspect shape, data types, duplicates, missingness, and important categorical and numerical distributions. Do not build any machine learning models yet. Explain each step and do not make major cleaning decisions without showing me the evidence first."
+
+Note the explicit scope limit (postings.csv only), explicit prohibition (no modeling yet), and explicit process requirement (show evidence before deciding) — this pattern of constraint-setting was used throughout the project rather than only at the start.
+
+**How outputs were evaluated.** Every notebook was actually executed end-to-end (not merely written) and checked for zero runtime errors before being treated as complete; numeric outputs were sanity-checked against the underlying data rather than accepted on inspection alone; and results that seemed wrong or impractical were treated as failures requiring diagnosis, not shipped anyway. A concrete example: the first implementation of the skill-extraction pipeline (a single combined regular expression over roughly 90 skill terms) was benchmarked on a subset of the data before being run on the full 123,849-posting dataset. That benchmark projected a runtime of close to an hour for the full dataset. This was treated as a failed evaluation, not an acceptable slow result — it prompted a diagnosis of the underlying algorithmic cause (regex alternation scales with the number of terms at every character position) and a switch to `flashtext`, a trie-based multi-keyword matching library, which was re-benchmarked (95 seconds on the full dataset) and re-validated against a manual sample of postings before being accepted into the pipeline. A second, lighter-weight example: draft versions of this report's PDF were rendered to images and visually inspected page by page before being finalized, which caught and fixed a text-wrapping defect that plain code review would not have surfaced.
+
+A full prompt log was not maintained as a separate file in this repository.
