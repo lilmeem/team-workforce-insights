@@ -65,6 +65,10 @@ Download it from Kaggle and place the contents alongside the notebooks so the fo
 
 The raw data is not committed to this repository (`postings.csv` alone is ~500MB, and licensing terms are still being confirmed — see open questions below). Check the dataset's Kaggle listing for its current license before redistributing any derived data.
 
+## Code attribution
+
+The data pipeline notebooks (`02` through `06`) and `app.py` were developed with substantial assistance from Claude (Anthropic), an AI coding assistant — including the cleaning decisions, the skill-extraction approach (gazetteer design and the switch to `flashtext` after an initial regex approach proved too slow), the recommendation engine's similarity/weighting design, and the Streamlit dashboard. Team members directed the approach, reviewed the reasoning and evidence presented at each step, and are responsible for the final content. Third-party libraries used (pandas, numpy, matplotlib, seaborn, flashtext, streamlit) are all cited via `requirements.txt` and used under their respective open-source licenses.
+
 ## Open questions (tracked, not yet resolved)
 
 - Whether `remote_allowed` missingness means "not remote" or "unspecified"
