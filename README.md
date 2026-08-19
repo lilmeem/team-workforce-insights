@@ -16,6 +16,7 @@ Run the notebooks in order, since each one depends on files saved by the previou
 4. [`05_skill_extraction.ipynb`](05_skill_extraction.ipynb) — gazetteer-based skill extraction from posting descriptions, saves `job_skills_extracted.parquet`.
 5. [`06_recommendation_engine.ipynb`](06_recommendation_engine.ipynb) — IDF-weighted content-based recommender + skill-gap detection, saves `recommendation_artifacts.npz`.
 6. [`app.py`](app.py) — Streamlit dashboard on top of the artifacts from step 5 (see below to run it).
+7. [`07_report_figures.ipynb`](07_report_figures.ipynb) — generates the figures embedded in [`report.pdf`](report.pdf) (source: [`report.md`](report.md)).
 
 ## Setup
 
